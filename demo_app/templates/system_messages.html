@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<h1>System Messages</h1>
+<div class="warning-banner"><strong>3 unread notices.</strong> Messages are generated for this training environment.</div>
+<table class="data-grid message-grid">
+  <thead><tr><th>Priority</th><th>Subject</th><th>Message</th></tr></thead>
+  <tbody>{% for message in messages %}<tr><td>{{ message[0] }}</td><td><strong>{{ message[1] }}</strong></td><td>{{ message[2] }}</td></tr>{% endfor %}</tbody>
+</table>
+{% endblock %}

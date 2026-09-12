@@ -1,0 +1,20 @@
+{
+  "code": "AMBIGUOUS_TARGET",
+  "expected_state": [
+    {
+      "kind": "element_visible",
+      "target": {
+        "candidates": [
+          {
+            "selector": "table.data-grid tbody tr:nth-child(2) td:nth-child(4)",
+            "strategy": "css"
+          }
+        ],
+        "description": "Savings current balance cell",
+        "expected_role": "cell",
+        "require_unique": true
+      }
+    }
+  ],
+  "message": "Target 'Savings current balance cell' matched 4 plausible elements using relative_text"
+}

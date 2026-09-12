@@ -1,0 +1,27 @@
+{
+  "business_outcome_code": null,
+  "capability_id": "lookup_savings_balance",
+  "capability_version": "1.0.0",
+  "error_category": null,
+  "error_code": null,
+  "evidence_path": null,
+  "evidence_requirements": [],
+  "expected_state": [],
+  "failed_step": null,
+  "human_recommended": false,
+  "legitimate_result": false,
+  "message": null,
+  "observed_state": {
+    "location": "http://127.0.0.1:8001/members/[REDACTED]",
+    "state_fingerprint": "90787277585df84431d68b9665aabf5c763a24a4e0cd609a3409201793023f7b",
+    "title": "Member Details | AI-interface Banking",
+    "visible_text_summary": "AI AI-interface Banking TRAINING ENVIRONMENT \u00b7 SYNTHETIC DATA ONLY OPERATIONS MENU Member Search Account Maintenance Daily Reports System Messages End Session CORE OPS 7.4.18 Terminal: TRN-04 Operations > Member Details Member Details ACTIVE Member ID [REDACTED] Relationship Since 2018-04-12 Member Name Avery Sample Record Notice Synthetic profile - no real PII Deposit Accounts Account Type Description Current Balance Available CHK-1042 Checking Everyday Checking $2,480.75 $2,380.75 SAV-7781 Savings "
+  },
+  "outputs": {
+    "savings_balance": "[REDACTED]"
+  },
+  "recovery_count": 0,
+  "retry_allowed": false,
+  "run_id": "replay_76d0c8e175984f168b2bc5c939cd6d36",
+  "status": "SUCCESS"
+}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<h1>Daily Reports</h1>
+<p class="notice">Operations date: <strong>Training Day 042</strong>. Figures are fixed synthetic fixtures.</p>
+<table class="data-grid">
+  <tr><th>Report ID</th><th>Description</th><th>Status</th><th>Generated</th></tr>
+  {% for report in reports %}<tr><td class="mono">{{ report[0] }}</td><td>{{ report[1] }}</td><td>{{ report[2] }}</td><td>{{ report[3] }}</td></tr>{% endfor %}
+</table>
+<h2>Control totals</h2>
+<table class="summary-table"><tr><th>Member searches</th><td>184</td></tr><tr><th>Transfers reviewed</th><td>27</td></tr><tr><th>Exceptions awaiting review</th><td>2</td></tr></table>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ page_title or "Operations" }} | AI-interface Banking</title>
+  <link rel="stylesheet" href="/assets/legacy.css">
+</head>
+<body>
+<table class="shell" cellspacing="0" cellpadding="0">
+  <tr><td colspan="2" class="masthead">
+    <div class="brand"><span class="brand-mark">AI</span> AI-interface Banking</div>
+    <div class="environment">TRAINING ENVIRONMENT · SYNTHETIC DATA ONLY</div>
+  </td></tr>
+  <tr>
+    <td class="sidebar" valign="top">
+      <div class="nav-title">OPERATIONS MENU</div>
+      <a href="/members">Member Search</a>
+      <a href="/accounts">Account Maintenance</a>
+      <a href="/reports">Daily Reports</a>
+      <a href="/messages">System Messages</a>
+      <form method="post" action="/session/end"><button class="link-button" type="submit">End Session</button></form>
+      <div class="build">CORE OPS 7.4.18<br>Terminal: TRN-04</div>
+    </td>
+    <td class="workspace" valign="top">
+      <div class="crumbs">Operations &gt; {{ page_title or "Home" }}</div>
+      {% block content %}{% endblock %}
+    </td>
+  </tr>
+</table>
+<script src="/assets/legacy.js"></script>
+</body>
+</html>

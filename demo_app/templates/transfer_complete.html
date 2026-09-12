@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}<h1>Transfer Submitted</h1>
+<div class="success-banner" role="status"><strong>Transfer accepted.</strong> Reference {{ reference }}</div>
+<table class="review-grid"><tr><th>Member ID</th><td>{{ transfer.member_id }}</td></tr><tr><th>From</th><td>{{ transfer.from_account }}</td></tr><tr><th>To</th><td>{{ transfer.to_account }}</td></tr><tr><th>Amount</th><td>${{ transfer.amount }}</td></tr></table>
+<a class="button primary" href="/members/{{ transfer.member_id }}">Return to Member</a>{% endblock %}

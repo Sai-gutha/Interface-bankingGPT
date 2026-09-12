@@ -1,0 +1,30 @@
+{
+  "business_outcome_code": "MEMBER_NOT_FOUND",
+  "capability_id": "lookup_savings_balance",
+  "capability_version": "1.0.0",
+  "error_category": "business_outcome",
+  "error_code": "MEMBER_NOT_FOUND",
+  "evidence_path": null,
+  "evidence_requirements": [
+    "event",
+    "observed_state"
+  ],
+  "expected_state": [],
+  "failed_step": null,
+  "human_recommended": false,
+  "legitimate_result": true,
+  "message": null,
+  "observed_state": {
+    "location": "http://127.0.0.1:8001/members/not-found?member_number=[REDACTED]",
+    "state_fingerprint": "63101f2025d8eaba0e3247c8f15931d156b64c2f38d14e2eac60b25bfc4fdfc9",
+    "title": "No Matching Member | AI-interface Banking",
+    "visible_text_summary": "AI AI-interface Banking TRAINING ENVIRONMENT \u00b7 SYNTHETIC DATA ONLY OPERATIONS MENU Member Search Account Maintenance Daily Reports System Messages End Session CORE OPS 7.4.18 Terminal: TRN-04 Operations > No Matching Member No Matching Member Record not found No membership record matched member ID [REDACTED]. Verify the number and try again. This is a normal business outcome. Return to Member Search"
+  },
+  "outputs": {
+    "savings_balance": "[REDACTED]"
+  },
+  "recovery_count": 0,
+  "retry_allowed": false,
+  "run_id": "replay_5de0529da7604b2ba875062c8f3a3ae0",
+  "status": "BUSINESS_OUTCOME"
+}

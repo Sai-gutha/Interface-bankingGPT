@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "lookup_savings_balance",
+  "name": "Look up savings balance",
+  "capability_version": "1.0.0",
+  "description": "Look up a synthetic member by ID and return the current savings balance.",
+  "target_application": {
+    "vendor_id": "interface_ai_demo",
+    "product_id": "banking_operations",
+    "display_name": "AI-interface Banking Operations",
+    "surface_kind": "legacy_web",
+    "entry_point": "http://127.0.0.1:8001/",
+    "allowed_origins": ["http://127.0.0.1:8001/"],
+    "supported_versions": ["7.4.x"],
+    "fingerprints": [
+      {
+        "name": "member services heading",
+        "condition": {
+          "kind": "text_present",
+          "expected": "AI-interface Banking",
+          "match": "contains"
+        },
+        "required": true
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "name": "member_id",
+      "value_type": "string",
+      "description": "Five-digit synthetic membership identifier.",
+      "required": true,
+      "default": null,
+      "sensitive": true,
+      "constraints": {
+        "pattern": "^[0-9]{5}$",
+        "minimum": null,
+        "maximum": null,
+        "min_length": 5,
+        "max_length": 5,
+        "allowed_values": null
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "savings_balance",
+      "value_type": "number",
+      "description": "Current savings balance in US dollars.",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "open_application",
+      "description": "Open the banking operations entry point.",
+      "action": {"kind": "navigate", "url": "http://127.0.0.1:8001/"},
+      "preconditions": [],
+      "postconditions": [
+        {
+          "kind": "element_visible",
+          "target": {
+            "description": "Begin Secure Session button",
+            "candidates": [
+              {"strategy": "role", "role": "button", "name": "Begin Secure Session", "exact": true},
+              {"strategy": "text", "text": "Begin Secure Session", "exact": true},
+              {"strategy": "css", "selector": "form[action='/session'] button"}
+            ],
+            "expected_role": "button",
+            "require_unique": true
+          }
+        }
+      ],
+      "timeout_ms": 10000,
+      "retry": {"max_attempts": 2, "backoff_ms": 500, "retry_on": ["transient_load"]},
+      "recovery": {"directives": []},
+      "risk": "read"
+    },
+    {
+      "step_id": "begin_session",
+      "description": "Begin a synthetic operator session.",
+      "action": {
+        "kind": "click",
+        "target": {
+          "description": "Begin Secure Session button",
+          "candidates": [
+            {"strategy": "role", "role": "button", "name": "Begin Secure Session", "exact": true},
+            {"strategy": "text", "text": "Begin Secure Session", "exact": true},
+            {"strategy": "css", "selector": "form[action='/session'] button"}
+          ],
+          "expected_role": "button",
+          "require_unique": true
+        }
+      },
+      "preconditions": [],
+      "postconditions": [{"kind": "url_matches", "pattern": "/members$"}],
+      "timeout_ms": 10000,
+      "retry": {"max_attempts": 1, "backoff_ms": 0, "retry_on": []},
+      "recovery": {"directives": [{"on": "session_expired", "strategy": "request_handoff", "max_uses": 1}]},
+      "risk": "read"
+    },
+    {
+      "step_id": "enter_member_id",
+      "description": "Enter the caller-provided member ID.",
+      "action": {
+        "kind": "type",
+        "target": {
+          "description": "Member ID search field",
+          "candidates": [
+            {"strategy": "label", "label": "Member ID", "exact": true},
+            {"strategy": "attribute", "name": "name", "value": "member_number"},
+            {"strategy": "css", "selector": "input[inputmode='numeric']"}
+          ],
+          "expected_role": "textbox",
+          "require_unique": true
+        },
+        "value": "{{member_id}}",
+        "clear_existing": true
+      },
+      "preconditions": [],
+      "postconditions": [
+        {
+          "kind": "value_equals",
+          "target": {
+            "description": "Member ID search field",
+            "candidates": [{"strategy": "label", "label": "Member ID", "exact": true}],
+            "expected_role": "textbox",
+            "require_unique": true
+          },
+          "expected": "{{member_id}}"
+        }
+      ],
+      "timeout_ms": 5000,
+      "retry": {"max_attempts": 1, "backoff_ms": 0, "retry_on": []},
+      "recovery": {"directives": []},
+      "risk": "read"
+    },
+    {
+      "step_id": "submit_member_search",
+      "description": "Submit the member search.",
+      "action": {
+        "kind": "click",
+        "target": {
+          "description": "Find Member button",
+          "candidates": [
+            {"strategy": "role", "role": "button", "name": "Find Member", "exact": true},
+            {"strategy": "relative_text", "anchor_text": "Member ID", "relation": "row_containing", "target_role": "button", "target_text": null, "target_css": null},
+            {"strategy": "css", "selector": "form[action='/members/search'] button"}
+          ],
+          "expected_role": "button",
+          "require_unique": true
+        }
+      },
+      "preconditions": [],
+      "postconditions": [
+        {
+          "kind": "text_present",
+          "target": null,
+          "expected": "Member Details",
+          "match": "contains"
+        }
+      ],
+      "timeout_ms": 10000,
+      "retry": {"max_attempts": 2, "backoff_ms": 750, "retry_on": ["transient_load", "timeout"]},
+      "recovery": {
+        "directives": [
+          {"on": "transient_load", "strategy": "retry_step", "max_uses": 1},
+          {"on": "permission_denied", "strategy": "stop", "max_uses": 1},
+          {"on": "session_expired", "strategy": "request_handoff", "max_uses": 1}
+        ]
+      },
+      "risk": "read"
+    },
+    {
+      "step_id": "extract_savings_balance",
+      "description": "Read the Current Balance cell from the savings account row.",
+      "action": {
+        "kind": "extract",
+        "rule": {
+          "output_name": "savings_balance",
+          "target": {
+            "description": "Savings current balance cell",
+            "candidates": [
+              {"strategy": "relative_text", "anchor_text": "Savings", "relation": "row_containing", "target_role": null, "target_text": null, "target_css": "td:nth-child(4)"},
+              {"strategy": "css", "selector": "table.data-grid tbody tr:nth-child(2) td:nth-child(4)"}
+            ],
+            "expected_role": "cell",
+            "require_unique": true
+          },
+          "source": "inner_text",
+          "attribute_name": null,
+          "regex": "^\\$?([0-9,]+\\.[0-9]{2})$",
+          "regex_group": 1,
+          "transforms": ["strip", "remove_currency", "remove_commas"]
+        }
+      },
+      "preconditions": [
+        {
+          "kind": "text_present",
+          "target": null,
+          "expected": "Deposit Accounts",
+          "match": "contains"
+        }
+      ],
+      "postconditions": [
+        {
+          "kind": "element_visible",
+          "target": {
+            "description": "Savings current balance cell",
+            "candidates": [{"strategy": "css", "selector": "table.data-grid tbody tr:nth-child(2) td:nth-child(4)"}],
+            "expected_role": "cell",
+            "require_unique": true
+          }
+        }
+      ],
+      "timeout_ms": 5000,
+      "retry": {"max_attempts": 1, "backoff_ms": 0, "retry_on": []},
+      "recovery": {"directives": []},
+      "risk": "read"
+    }
+  ],
+  "success_conditions": [
+    {"kind": "url_matches", "pattern": "/members/{{member_id}}$"},
+    {"kind": "text_present", "target": null, "expected": "Savings", "match": "contains"}
+  ],
+  "business_outcomes": [
+    {
+      "code": "MEMBER_NOT_FOUND",
+      "description": "No membership record matched the supplied member ID.",
+      "when": [{"kind": "text_present", "target": null, "expected": "Record not found", "match": "contains"}],
+      "output_values": {"savings_balance": null}
+    }
+  ],
+  "risk": "read",
+  "reuse": {
+    "vendor_capability_key": "banking_operations.lookup_savings_balance",
+    "tenant_scope": "vendor_default",
+    "tenant_id": null,
+    "base_capability_id": null,
+    "allowed_override_paths": ["target_application.entry_point", "target_application.allowed_origins", "steps.*.action.target.candidates"],
+    "tags": ["member-service", "balance-inquiry", "read-only"]
+  },
+  "provenance": {
+    "created_at": "2026-09-11T15:00:00Z",
+    "created_by": "human_author",
+    "discovery_run_id": null,
+    "approved_by": null,
+    "approved_at": null
+  }
+}

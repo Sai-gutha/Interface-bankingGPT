@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<h1>Account Maintenance</h1>
+<div class="notice"><strong>Training queue:</strong> Select a member account to review. Changes are not enabled in this demo.</div>
+<table class="data-grid">
+  <thead><tr><th>Member</th><th>Account</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody>{% for member in members %}{% for account in member.accounts %}<tr>
+    <td>{{ member.member_id }}</td><td class="mono">{{ account.number }}</td><td>{{ account.kind }}</td>
+    <td>Open</td><td><a href="/members/{{ member.member_id }}">View member</a></td>
+  </tr>{% endfor %}{% endfor %}</tbody>
+</table>
+<div class="operator-tip">Maintenance writes are intentionally unavailable. Use the member detail screen for the transfer demonstration.</div>
+{% endblock %}

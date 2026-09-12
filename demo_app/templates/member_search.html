@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block content %}
+<h1>Member Search</h1>
+<div class="notice">Use member number to locate an individual membership record.</div>
+{% if message %}<div class="error-banner" role="alert"><strong>Validation error:</strong> {{ message }}</div>{% endif %}
+<table class="panel form-table">
+  <tr><th colspan="2">Search Criteria</th></tr>
+  <tr><td class="field-label"><label for="memberNo">Member ID</label></td><td>
+    <form method="post" action="/members/search" class="inline-form">
+      <input id="memberNo" name="member_number" inputmode="numeric" autocomplete="off" size="18" autofocus>
+      <button class="primary" type="submit">Find Member</button>
+    </form><small>Enter the five-digit training member number.</small>
+  </td></tr>
+</table>
+<div class="operator-tip"><strong>Operator note:</strong> Never search using real customer information.</div>
+{% endblock %}

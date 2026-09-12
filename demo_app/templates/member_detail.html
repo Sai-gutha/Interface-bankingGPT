@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<div class="title-row"><h1>Member Details</h1><span class="status active">{{ member.status }}</span></div>
+<table class="summary-table">
+  <tr><th>Member ID</th><td>{{ member.member_id }}</td><th>Relationship Since</th><td>{{ member.relationship_since }}</td></tr>
+  <tr><th>Member Name</th><td>{{ member.display_name }}</td><th>Record Notice</th><td>{{ member.contact_hint }}</td></tr>
+</table>
+<h2>Deposit Accounts</h2>
+<table class="data-grid">
+  <thead><tr><th>Account</th><th>Type</th><th>Description</th><th class="money">Current Balance</th><th class="money">Available</th></tr></thead>
+  <tbody>{% for account in member.accounts %}<tr>
+    <td><a href="#account-{{ loop.index }}">{{ account.number }}</a></td><td>{{ account.kind }}</td><td>{{ account.nickname }}</td>
+    <td class="money">${{ "{:,.2f}".format(account.balance) }}</td><td class="money">${{ "{:,.2f}".format(account.available) }}</td>
+  </tr>{% endfor %}</tbody>
+</table>
+<div class="action-bar"><a class="button secondary" href="/members">New Search</a><a class="button primary" href="/members/{{ member.member_id }}/transfer">Transfer Funds</a></div>
+{% endblock %}

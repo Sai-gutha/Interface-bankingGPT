@@ -1,0 +1,1582 @@
+{
+  "$defs": {
+    "AccessibilityIdLocator": {
+      "additionalProperties": false,
+      "description": "Platform accessibility identifier for future desktop adapters.",
+      "properties": {
+        "strategy": {
+          "const": "accessibility_id",
+          "default": "accessibility_id",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "identifier": {
+          "title": "Identifier",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier"
+      ],
+      "title": "AccessibilityIdLocator",
+      "type": "object"
+    },
+    "ApplicationFingerprint": {
+      "additionalProperties": false,
+      "description": "Signals checked before replay to detect an incompatible app variant.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "condition": {
+          "discriminator": {
+            "mapping": {
+              "element_hidden": "#/$defs/ElementCondition",
+              "element_visible": "#/$defs/ElementCondition",
+              "text_present": "#/$defs/TextCondition",
+              "url_matches": "#/$defs/UrlCondition",
+              "value_equals": "#/$defs/ValueCondition"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ElementCondition"
+            },
+            {
+              "$ref": "#/$defs/TextCondition"
+            },
+            {
+              "$ref": "#/$defs/UrlCondition"
+            },
+            {
+              "$ref": "#/$defs/ValueCondition"
+            }
+          ],
+          "title": "Condition"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "condition"
+      ],
+      "title": "ApplicationFingerprint",
+      "type": "object"
+    },
+    "AttributeLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "attribute",
+          "default": "attribute",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "AttributeLocator",
+      "type": "object"
+    },
+    "BusinessOutcome": {
+      "additionalProperties": false,
+      "description": "Expected terminal state returned to the caller rather than raised as a failure.",
+      "properties": {
+        "code": {
+          "enum": [
+            "MEMBER_NOT_FOUND",
+            "INVALID_INPUT",
+            "ACCOUNT_NOT_FOUND"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "when": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "element_hidden": "#/$defs/ElementCondition",
+                "element_visible": "#/$defs/ElementCondition",
+                "text_present": "#/$defs/TextCondition",
+                "url_matches": "#/$defs/UrlCondition",
+                "value_equals": "#/$defs/ValueCondition"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ElementCondition"
+              },
+              {
+                "$ref": "#/$defs/TextCondition"
+              },
+              {
+                "$ref": "#/$defs/UrlCondition"
+              },
+              {
+                "$ref": "#/$defs/ValueCondition"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "When",
+          "type": "array"
+        },
+        "output_values": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Output Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "code",
+        "description",
+        "when"
+      ],
+      "title": "BusinessOutcome",
+      "type": "object"
+    },
+    "ClickAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "click",
+          "default": "click",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "title": "ClickAction",
+      "type": "object"
+    },
+    "CoordinateLocator": {
+      "additionalProperties": false,
+      "description": "Last-resort point tied to a recorded viewport and coordinate space.",
+      "properties": {
+        "strategy": {
+          "const": "coordinates",
+          "default": "coordinates",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "x": {
+          "minimum": 0,
+          "title": "X",
+          "type": "integer"
+        },
+        "y": {
+          "minimum": 0,
+          "title": "Y",
+          "type": "integer"
+        },
+        "viewport_width": {
+          "exclusiveMinimum": 0,
+          "title": "Viewport Width",
+          "type": "integer"
+        },
+        "viewport_height": {
+          "exclusiveMinimum": 0,
+          "title": "Viewport Height",
+          "type": "integer"
+        },
+        "coordinate_space": {
+          "default": "viewport",
+          "enum": [
+            "viewport",
+            "screen"
+          ],
+          "title": "Coordinate Space",
+          "type": "string"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "viewport_width",
+        "viewport_height"
+      ],
+      "title": "CoordinateLocator",
+      "type": "object"
+    },
+    "CssLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "css",
+          "default": "css",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "selector": {
+          "title": "Selector",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selector"
+      ],
+      "title": "CssLocator",
+      "type": "object"
+    },
+    "ElementCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "element_visible",
+            "element_hidden"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        }
+      },
+      "required": [
+        "kind",
+        "target"
+      ],
+      "title": "ElementCondition",
+      "type": "object"
+    },
+    "ExtractAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "extract",
+          "default": "extract",
+          "title": "Kind",
+          "type": "string"
+        },
+        "rule": {
+          "$ref": "#/$defs/ExtractionRule"
+        }
+      },
+      "required": [
+        "rule"
+      ],
+      "title": "ExtractAction",
+      "type": "object"
+    },
+    "ExtractionRule": {
+      "additionalProperties": false,
+      "description": "Declare how a surface value becomes a typed capability output.",
+      "properties": {
+        "output_name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Output Name",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "source": {
+          "default": "inner_text",
+          "enum": [
+            "inner_text",
+            "value",
+            "attribute"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "attribute_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribute Name"
+        },
+        "regex": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Regex"
+        },
+        "regex_group": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "default": 0,
+          "title": "Regex Group"
+        },
+        "transforms": {
+          "items": {
+            "$ref": "#/$defs/ExtractionTransform"
+          },
+          "title": "Transforms",
+          "type": "array"
+        }
+      },
+      "required": [
+        "output_name",
+        "target"
+      ],
+      "title": "ExtractionRule",
+      "type": "object"
+    },
+    "ExtractionTransform": {
+      "enum": [
+        "strip",
+        "collapse_whitespace",
+        "remove_currency",
+        "remove_commas",
+        "lowercase"
+      ],
+      "title": "ExtractionTransform",
+      "type": "string"
+    },
+    "InputParameter": {
+      "additionalProperties": false,
+      "description": "A caller-supplied, typed capability argument.",
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value_type": {
+          "$ref": "#/$defs/ValueType"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "sensitive": {
+          "default": false,
+          "title": "Sensitive",
+          "type": "boolean"
+        },
+        "constraints": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ParameterConstraints"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "value_type",
+        "description"
+      ],
+      "title": "InputParameter",
+      "type": "object"
+    },
+    "LabelLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "label",
+          "default": "label",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "exact": {
+          "default": true,
+          "title": "Exact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "LabelLocator",
+      "type": "object"
+    },
+    "NavigateAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "navigate",
+          "default": "navigate",
+          "title": "Kind",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "NavigateAction",
+      "type": "object"
+    },
+    "OutputParameter": {
+      "additionalProperties": false,
+      "description": "A typed value returned only after a terminal condition is verified.",
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value_type": {
+          "$ref": "#/$defs/ValueType"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "sensitive": {
+          "default": false,
+          "title": "Sensitive",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "value_type",
+        "description"
+      ],
+      "title": "OutputParameter",
+      "type": "object"
+    },
+    "ParameterConstraints": {
+      "additionalProperties": false,
+      "description": "Portable validation rules applied before a UI session starts.",
+      "properties": {
+        "pattern": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pattern"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "min_length": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Length"
+        },
+        "max_length": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Length"
+        },
+        "allowed_values": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Values"
+        }
+      },
+      "title": "ParameterConstraints",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Audit linkage without raw model prompts, reasoning, transcripts, or observations.",
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "created_by": {
+          "enum": [
+            "discovery_compiler",
+            "human_author"
+          ],
+          "title": "Created By",
+          "type": "string"
+        },
+        "discovery_run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Discovery Run Id"
+        },
+        "approved_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved By"
+        },
+        "approved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approved At"
+        }
+      },
+      "required": [
+        "created_at",
+        "created_by"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RecoveryDirective": {
+      "additionalProperties": false,
+      "description": "A predeclared response to one recognized runtime condition.",
+      "properties": {
+        "on": {
+          "enum": [
+            "validation_error",
+            "permission_denied",
+            "known_dialog",
+            "unexpected_dialog",
+            "session_expired",
+            "transient_load"
+          ],
+          "title": "On",
+          "type": "string"
+        },
+        "strategy": {
+          "enum": [
+            "retry_step",
+            "dismiss_dialog",
+            "request_handoff",
+            "return_outcome",
+            "stop"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "max_uses": {
+          "default": 1,
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Uses",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "on",
+        "strategy"
+      ],
+      "title": "RecoveryDirective",
+      "type": "object"
+    },
+    "RecoveryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "directives": {
+          "items": {
+            "$ref": "#/$defs/RecoveryDirective"
+          },
+          "title": "Directives",
+          "type": "array"
+        }
+      },
+      "title": "RecoveryPolicy",
+      "type": "object"
+    },
+    "RelativeTextLocator": {
+      "additionalProperties": false,
+      "description": "Find a control by stable neighboring text rather than DOM position.",
+      "properties": {
+        "strategy": {
+          "const": "relative_text",
+          "default": "relative_text",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "anchor_text": {
+          "title": "Anchor Text",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "within",
+            "following",
+            "preceding",
+            "row_containing"
+          ],
+          "title": "Relation",
+          "type": "string"
+        },
+        "target_role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Role"
+        },
+        "target_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Text"
+        },
+        "target_css": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Css"
+        }
+      },
+      "required": [
+        "anchor_text",
+        "relation"
+      ],
+      "title": "RelativeTextLocator",
+      "type": "object"
+    },
+    "RetryPolicy": {
+      "additionalProperties": false,
+      "description": "Bounded retry rules; replay never invents recovery behavior.",
+      "properties": {
+        "max_attempts": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "backoff_ms": {
+          "default": 0,
+          "maximum": 60000,
+          "minimum": 0,
+          "title": "Backoff Ms",
+          "type": "integer"
+        },
+        "retry_on": {
+          "items": {
+            "enum": [
+              "target_not_found",
+              "timeout",
+              "transient_load",
+              "application_unavailable"
+            ],
+            "type": "string"
+          },
+          "title": "Retry On",
+          "type": "array"
+        }
+      },
+      "title": "RetryPolicy",
+      "type": "object"
+    },
+    "ReuseMetadata": {
+      "additionalProperties": false,
+      "description": "Constrained vendor/tenant specialization metadata, not tenant secrets.",
+      "properties": {
+        "vendor_capability_key": {
+          "title": "Vendor Capability Key",
+          "type": "string"
+        },
+        "tenant_scope": {
+          "default": "vendor_default",
+          "enum": [
+            "vendor_default",
+            "tenant_override"
+          ],
+          "title": "Tenant Scope",
+          "type": "string"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tenant Id"
+        },
+        "base_capability_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Base Capability Id"
+        },
+        "allowed_override_paths": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Override Paths",
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "vendor_capability_key"
+      ],
+      "title": "ReuseMetadata",
+      "type": "object"
+    },
+    "RiskLevel": {
+      "enum": [
+        "read",
+        "reversible_write",
+        "irreversible_write"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "RoleLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "role",
+          "default": "role",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "exact": {
+          "default": true,
+          "title": "Exact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "role"
+      ],
+      "title": "RoleLocator",
+      "type": "object"
+    },
+    "SelectAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "select",
+          "default": "select",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "value"
+      ],
+      "title": "SelectAction",
+      "type": "object"
+    },
+    "Step": {
+      "additionalProperties": false,
+      "description": "One ordered action with explicit completion and recovery semantics.",
+      "properties": {
+        "step_id": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Step Id",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "action": {
+          "discriminator": {
+            "mapping": {
+              "click": "#/$defs/ClickAction",
+              "extract": "#/$defs/ExtractAction",
+              "navigate": "#/$defs/NavigateAction",
+              "select": "#/$defs/SelectAction",
+              "type": "#/$defs/TypeAction",
+              "wait": "#/$defs/WaitAction"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/NavigateAction"
+            },
+            {
+              "$ref": "#/$defs/ClickAction"
+            },
+            {
+              "$ref": "#/$defs/TypeAction"
+            },
+            {
+              "$ref": "#/$defs/SelectAction"
+            },
+            {
+              "$ref": "#/$defs/ExtractAction"
+            },
+            {
+              "$ref": "#/$defs/WaitAction"
+            }
+          ],
+          "title": "Action"
+        },
+        "preconditions": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "element_hidden": "#/$defs/ElementCondition",
+                "element_visible": "#/$defs/ElementCondition",
+                "text_present": "#/$defs/TextCondition",
+                "url_matches": "#/$defs/UrlCondition",
+                "value_equals": "#/$defs/ValueCondition"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ElementCondition"
+              },
+              {
+                "$ref": "#/$defs/TextCondition"
+              },
+              {
+                "$ref": "#/$defs/UrlCondition"
+              },
+              {
+                "$ref": "#/$defs/ValueCondition"
+              }
+            ]
+          },
+          "title": "Preconditions",
+          "type": "array"
+        },
+        "postconditions": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "element_hidden": "#/$defs/ElementCondition",
+                "element_visible": "#/$defs/ElementCondition",
+                "text_present": "#/$defs/TextCondition",
+                "url_matches": "#/$defs/UrlCondition",
+                "value_equals": "#/$defs/ValueCondition"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ElementCondition"
+              },
+              {
+                "$ref": "#/$defs/TextCondition"
+              },
+              {
+                "$ref": "#/$defs/UrlCondition"
+              },
+              {
+                "$ref": "#/$defs/ValueCondition"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Postconditions",
+          "type": "array"
+        },
+        "timeout_ms": {
+          "default": 10000,
+          "exclusiveMinimum": 0,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "retry": {
+          "$ref": "#/$defs/RetryPolicy"
+        },
+        "recovery": {
+          "$ref": "#/$defs/RecoveryPolicy"
+        },
+        "risk": {
+          "$ref": "#/$defs/RiskLevel",
+          "default": "read"
+        }
+      },
+      "required": [
+        "step_id",
+        "description",
+        "action",
+        "postconditions"
+      ],
+      "title": "Step",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "description": "Semantic control identity with deterministic, ordered locator fallbacks.",
+      "properties": {
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "candidates": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "accessibility_id": "#/$defs/AccessibilityIdLocator",
+                "attribute": "#/$defs/AttributeLocator",
+                "coordinates": "#/$defs/CoordinateLocator",
+                "css": "#/$defs/CssLocator",
+                "label": "#/$defs/LabelLocator",
+                "relative_text": "#/$defs/RelativeTextLocator",
+                "role": "#/$defs/RoleLocator",
+                "text": "#/$defs/TextLocator",
+                "xpath": "#/$defs/XPathLocator"
+              },
+              "propertyName": "strategy"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/RoleLocator"
+              },
+              {
+                "$ref": "#/$defs/LabelLocator"
+              },
+              {
+                "$ref": "#/$defs/TextLocator"
+              },
+              {
+                "$ref": "#/$defs/AttributeLocator"
+              },
+              {
+                "$ref": "#/$defs/RelativeTextLocator"
+              },
+              {
+                "$ref": "#/$defs/CssLocator"
+              },
+              {
+                "$ref": "#/$defs/XPathLocator"
+              },
+              {
+                "$ref": "#/$defs/CoordinateLocator"
+              },
+              {
+                "$ref": "#/$defs/AccessibilityIdLocator"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "expected_role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Role"
+        },
+        "require_unique": {
+          "default": true,
+          "title": "Require Unique",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "description",
+        "candidates"
+      ],
+      "title": "Target",
+      "type": "object"
+    },
+    "TargetApplication": {
+      "additionalProperties": false,
+      "properties": {
+        "vendor_id": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Vendor Id",
+          "type": "string"
+        },
+        "product_id": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "display_name": {
+          "title": "Display Name",
+          "type": "string"
+        },
+        "surface_kind": {
+          "enum": [
+            "web",
+            "legacy_web",
+            "desktop"
+          ],
+          "title": "Surface Kind",
+          "type": "string"
+        },
+        "entry_point": {
+          "title": "Entry Point",
+          "type": "string"
+        },
+        "allowed_origins": {
+          "items": {
+            "format": "uri",
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Origins",
+          "type": "array"
+        },
+        "supported_versions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supported Versions",
+          "type": "array"
+        },
+        "fingerprints": {
+          "items": {
+            "$ref": "#/$defs/ApplicationFingerprint"
+          },
+          "title": "Fingerprints",
+          "type": "array"
+        }
+      },
+      "required": [
+        "vendor_id",
+        "product_id",
+        "display_name",
+        "surface_kind",
+        "entry_point",
+        "allowed_origins"
+      ],
+      "title": "TargetApplication",
+      "type": "object"
+    },
+    "TextCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "text_present",
+          "default": "text_present",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Target"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "expected": {
+          "title": "Expected",
+          "type": "string"
+        },
+        "match": {
+          "default": "contains",
+          "enum": [
+            "exact",
+            "contains",
+            "regex"
+          ],
+          "title": "Match",
+          "type": "string"
+        }
+      },
+      "required": [
+        "expected"
+      ],
+      "title": "TextCondition",
+      "type": "object"
+    },
+    "TextLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "text",
+          "default": "text",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "exact": {
+          "default": true,
+          "title": "Exact",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TextLocator",
+      "type": "object"
+    },
+    "TypeAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "type",
+          "default": "type",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "clear_existing": {
+          "default": true,
+          "title": "Clear Existing",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "target",
+        "value"
+      ],
+      "title": "TypeAction",
+      "type": "object"
+    },
+    "UrlCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "url_matches",
+          "default": "url_matches",
+          "title": "Kind",
+          "type": "string"
+        },
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pattern"
+      ],
+      "title": "UrlCondition",
+      "type": "object"
+    },
+    "ValueCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "value_equals",
+          "default": "value_equals",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "expected": {
+          "title": "Expected",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "expected"
+      ],
+      "title": "ValueCondition",
+      "type": "object"
+    },
+    "ValueType": {
+      "enum": [
+        "string",
+        "integer",
+        "number",
+        "boolean"
+      ],
+      "title": "ValueType",
+      "type": "string"
+    },
+    "WaitAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "wait",
+          "default": "wait",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "state": {
+          "default": "visible",
+          "enum": [
+            "visible",
+            "hidden"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "title": "WaitAction",
+      "type": "object"
+    },
+    "XPathLocator": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "const": "xpath",
+          "default": "xpath",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "expression": {
+          "title": "Expression",
+          "type": "string"
+        }
+      },
+      "required": [
+        "expression"
+      ],
+      "title": "XPathLocator",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Agent-invocable, human-reviewable, deterministic automation contract.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "capability_id": {
+      "pattern": "^[a-z][a-z0-9_]{0,63}$",
+      "title": "Capability Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "capability_version": {
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?$",
+      "title": "Capability Version",
+      "type": "string"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "target_application": {
+      "$ref": "#/$defs/TargetApplication"
+    },
+    "inputs": {
+      "items": {
+        "$ref": "#/$defs/InputParameter"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "outputs": {
+      "items": {
+        "$ref": "#/$defs/OutputParameter"
+      },
+      "title": "Outputs",
+      "type": "array"
+    },
+    "steps": {
+      "items": {
+        "$ref": "#/$defs/Step"
+      },
+      "minItems": 1,
+      "title": "Steps",
+      "type": "array"
+    },
+    "success_conditions": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "element_hidden": "#/$defs/ElementCondition",
+            "element_visible": "#/$defs/ElementCondition",
+            "text_present": "#/$defs/TextCondition",
+            "url_matches": "#/$defs/UrlCondition",
+            "value_equals": "#/$defs/ValueCondition"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ElementCondition"
+          },
+          {
+            "$ref": "#/$defs/TextCondition"
+          },
+          {
+            "$ref": "#/$defs/UrlCondition"
+          },
+          {
+            "$ref": "#/$defs/ValueCondition"
+          }
+        ]
+      },
+      "minItems": 1,
+      "title": "Success Conditions",
+      "type": "array"
+    },
+    "business_outcomes": {
+      "items": {
+        "$ref": "#/$defs/BusinessOutcome"
+      },
+      "title": "Business Outcomes",
+      "type": "array"
+    },
+    "risk": {
+      "$ref": "#/$defs/RiskLevel"
+    },
+    "reuse": {
+      "$ref": "#/$defs/ReuseMetadata"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    }
+  },
+  "required": [
+    "capability_id",
+    "name",
+    "capability_version",
+    "description",
+    "target_application",
+    "steps",
+    "success_conditions",
+    "risk",
+    "reuse",
+    "provenance"
+  ],
+  "title": "CapabilityArtifact",
+  "type": "object"
+}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block content %}
+<h1>Transfer Funds</h1><div class="member-strip">Member <strong>{{ member.member_id }}</strong> — {{ member.display_name }}</div>
+{% if errors %}<div class="error-banner" role="alert"><strong>Correct the following validation errors:</strong><ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" action="/members/{{ member.member_id }}/transfer/review">
+<table class="panel form-table"><tr><th colspan="2">Transfer Instructions</th></tr>
+  <tr><td class="field-label"><label>From account</label></td><td><select name="from_account">
+    <option value="">-- Select source --</option>{% for account in member.accounts %}<option value="{{ account.number }}" {% if values.from_account == account.number %}selected{% endif %}>{{ account.kind }} — {{ account.number }} — Available ${{ "{:,.2f}".format(account.available) }}</option>{% endfor %}
+  </select></td></tr>
+  <tr><td class="field-label">To account</td><td><select name="to_account" aria-label="To account">
+    <option value="">-- Select destination --</option>{% for account in member.accounts %}<option value="{{ account.number }}" {% if values.to_account == account.number %}selected{% endif %}>{{ account.kind }} — {{ account.number }}</option>{% endfor %}
+  </select></td></tr>
+  <tr><td class="field-label"><label for="amt">Amount</label></td><td><span class="currency">$</span><input id="amt" name="amount" value="{{ values.amount or '' }}" size="14" inputmode="decimal"></td></tr>
+  <tr><td class="field-label">Memo</td><td><input name="memo" aria-label="Memo" value="{{ values.memo or '' }}" maxlength="60" size="42"></td></tr>
+</table>
+<div class="action-bar"><a class="button secondary" href="/members/{{ member.member_id }}">Cancel</a><button class="primary" type="submit">Continue to Review</button></div>
+</form>{% endblock %}

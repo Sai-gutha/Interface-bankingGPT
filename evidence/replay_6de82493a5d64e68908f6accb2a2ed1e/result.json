@@ -1,0 +1,33 @@
+{
+  "business_outcome_code": null,
+  "capability_id": "lookup_savings_balance",
+  "capability_version": "1.0.0",
+  "error_category": "hard_failure",
+  "error_code": "AMBIGUOUS_TARGET",
+  "evidence_path": "/Users/saikarthikgutha/Documents/backup/interface.ai/evidence/replay_6de82493a5d64e68908f6accb2a2ed1e/failures/extract_savings_balance",
+  "evidence_requirements": [
+    "event",
+    "observed_state",
+    "screenshot",
+    "expected_state",
+    "locator_attempts"
+  ],
+  "expected_state": [
+    "{\"kind\":\"element_visible\",\"target\":{\"description\":\"Savings current balance cell\",\"candidates\":[{\"strategy\":\"css\",\"selector\":\"table.data-grid tbody tr:nth-child(2) td:nth-child(4)\"}],\"expected_role\":\"cell\",\"require_unique\":true}}"
+  ],
+  "failed_step": "extract_savings_balance",
+  "human_recommended": true,
+  "legitimate_result": false,
+  "message": "Target 'Savings current balance cell' matched 4 plausible elements using relative_text",
+  "observed_state": {
+    "location": "http://127.0.0.1:8001/members/[REDACTED]",
+    "state_fingerprint": "90787277585df84431d68b9665aabf5c763a24a4e0cd609a3409201793023f7b",
+    "title": "Member Details | AI-interface Banking",
+    "visible_text_summary": "AI AI-interface Banking TRAINING ENVIRONMENT \u00b7 SYNTHETIC DATA ONLY OPERATIONS MENU Member Search Account Maintenance Daily Reports System Messages End Session CORE OPS 7.4.18 Terminal: TRN-04 Operations > Member Details Member Details ACTIVE Member ID [REDACTED] Relationship Since 2018-04-12 Member Name Avery Sample Record Notice Synthetic profile - no real PII Deposit Accounts Account Type Description Current Balance Available CHK-1042 Checking Everyday Checking $2,480.75 $2,380.75 SAV-7781 Savings "
+  },
+  "outputs": {},
+  "recovery_count": 0,
+  "retry_allowed": false,
+  "run_id": "replay_6de82493a5d64e68908f6accb2a2ed1e",
+  "status": "HARD_FAILURE"
+}

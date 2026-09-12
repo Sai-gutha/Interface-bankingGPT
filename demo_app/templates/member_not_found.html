@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}
+<h1>No Matching Member</h1>
+<div class="business-outcome" role="status"><strong>Record not found</strong><p>No membership record matched member ID <span class="mono">{{ member_number }}</span>.</p><p>Verify the number and try again. This is a normal business outcome.</p></div>
+<a class="button primary" href="/members">Return to Member Search</a>
+{% endblock %}

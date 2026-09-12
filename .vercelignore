@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.git
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+artifacts
+evidence
+tests
+uv.lock
+Assignment A — Computer-Use Automation System.pdf

@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}
+<h1>Review Transfer</h1><div class="warning-banner"><strong>Review only:</strong> Funds have not moved. Final submission is irreversible in this training workflow.</div>
+<table class="review-grid">
+  <tr><th>Member</th><td>{{ member.member_id }} — {{ member.display_name }}</td></tr><tr><th>From</th><td>{{ source.kind }} / {{ source.number }}</td></tr>
+  <tr><th>To</th><td>{{ destination.kind }} / {{ destination.number }}</td></tr><tr><th>Amount</th><td class="review-amount">${{ transfer.amount }}</td></tr><tr><th>Memo</th><td>{{ transfer.memo or "—" }}</td></tr>
+</table>
+<form method="post" action="/transfers/{{ transfer_id }}/submit" {% if show_unexpected_dialog %}data-operations-dialog="true"{% endif %}>
+  <div class="action-bar"><a class="button secondary" href="/members/{{ member.member_id }}/transfer">Edit Transfer</a><button class="danger" type="submit">Submit Transfer</button></div>
+</form>{% endblock %}
